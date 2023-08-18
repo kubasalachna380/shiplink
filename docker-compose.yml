@@ -1,0 +1,42 @@
+version: '3.1'
+services:
+  shiplink-task:
+    container_name: php
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - ./app:/var/www/html/
+    ports:
+      - 8081:80
+  db:
+    container_name: mysql-db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123Root321
+      MYSQL_DATABASE: Shiplink
+      MYSQL_USER: Admin_User
+      MYSQL_PASSWORD: 123Admin321
+    volumes:
+      - ./mysql:/var/lib/mysql/
+    ports:
+      - 9906:3306
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8000:80
+    environment:
+      UPLOAD_LIMIT: 64M
+  composer:
+    build:
+      context: ./composer
+      dockerfile: Dockerfile
+    container_name: composer
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - shiplink-task

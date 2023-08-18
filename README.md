@@ -1,1 +1,2 @@
-# shiplink
+# Shiplink - simple order management API
+
